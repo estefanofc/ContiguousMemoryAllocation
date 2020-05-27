@@ -25,11 +25,13 @@ void worstFit() {
 }
 
 void allocate(char process, int size, char algo) {
-
+  printf("%c", process);
+  printf("%d", size);
+  printf("%c", algo);
 }
 
 void freeAllocations(char process) {
-
+  printf("%c", process);
 }
 
 void showState() {
@@ -37,7 +39,7 @@ void showState() {
 }
 
 void readfile(char *line) {
-
+  printf(line);
 }
 
 void compact() {
@@ -65,3 +67,52 @@ int tokenize(char *line, char **tokens) {
   }
   return num;
 }
+
+int main() {
+  char *args[MAX_LINE / 2 + 1];/* command line arguments */
+  char *cmdLine = (char *) malloc(MAX_LINE * sizeof(char));
+  for (int i = 0; i < MAX_LINE / 2 + 1; ++i)
+    args[i] = NULL;
+  while (1) {
+    fflush(stdout);
+    int len = readline(&cmdLine);
+    if (len <= 0)
+      break;
+    if (strcmp(cmdLine, "") == 0)
+      continue;
+    if (strcmp(cmdLine, "E") == 0)
+      break;
+    if (strcmp(cmdLine, "S") == 0) {
+      printf("S");
+      showState();
+      continue;
+    }
+    if (strcmp(cmdLine, "C") == 0) {
+      printf("C");
+      compact();
+      continue;
+    }
+    int num_of_tokens = tokenize(cmdLine, args);
+    if (strcmp(args[0], "A") == 0) {
+      allocate(args[1][0], atoi(args[2]), args[3][0]);
+      continue;
+    }
+    if (strcmp(args[0], "F") == 0) {
+      freeAllocations(args[1][0]);
+      continue;
+    }
+    if (strcmp(args[0], "R") == 0) {
+      readfile(args[1]);
+      continue;
+    }
+    for (int i = 0; i <= num_of_tokens; ++i)
+      args[i] = NULL;
+  }
+  printf("Exiting \n");
+  return 0;
+
+}
+
+
+
+

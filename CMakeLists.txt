@@ -3,4 +3,4 @@ project(P4 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(P4 main.c memory.c)
+add_executable(P4 memory.c)
