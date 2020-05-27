@@ -214,9 +214,8 @@ void readfile(char *file) {
       printf("Exiting\n");
       free(cmdLine);
       free(memory);
-//      for (int i = 0; i < num_of_tokens; ++i)
-//        free(args[i]);
-      //free(args);
+      fclose(fptr);
+      free(fptr);
       exit(0);
     }
     if (strcmp(args[0], "A") == 0) {
@@ -248,7 +247,7 @@ int main() {
     memory[i] = '.';
   char *args[MAX_LINE / 2 + 1];/* command line arguments */
   char *cmdLine = (char *) malloc(MAX_LINE * sizeof(char));
-  int num_of_tokens;
+  //int num_of_tokens;
   for (int i = 0; i < MAX_LINE / 2 + 1; ++i)
     args[i] = NULL;
   while (1) {
@@ -269,7 +268,7 @@ int main() {
       compact();
       continue;
     }
-    num_of_tokens = tokenize(cmdLine, args);
+    tokenize(cmdLine, args);
     if (strcmp(args[0], "A") == 0) {
       allocate(args[1][0], atoi(args[2]), args[3][0]);
       continue;
@@ -282,8 +281,8 @@ int main() {
       readfile(args[1]);
       continue;
     }
-    for (int i = 0; i <= num_of_tokens; ++i)
-      args[i] = NULL;
+//    for (int i = 0; i <= num_of_tokens; ++i)
+//      args[i] = NULL;
   }
   free(cmdLine);
 //  for (int i = 0; i <= num_of_tokens; ++i)
