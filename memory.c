@@ -243,6 +243,7 @@ int main() {
     memory[i] = '.';
   char *args[MAX_LINE / 2 + 1];/* command line arguments */
   char *cmdLine = (char *) malloc(MAX_LINE * sizeof(char));
+  int num_of_tokens
   for (int i = 0; i < MAX_LINE / 2 + 1; ++i)
     args[i] = NULL;
   while (1) {
@@ -263,7 +264,7 @@ int main() {
       compact();
       continue;
     }
-    int num_of_tokens = tokenize(cmdLine, args);
+    num_of_tokens = tokenize(cmdLine, args);
     if (strcmp(args[0], "A") == 0) {
       allocate(args[1][0], atoi(args[2]), args[3][0]);
       continue;
@@ -280,7 +281,9 @@ int main() {
       args[i] = NULL;
   }
   free(cmdLine);
-  free(*args);
+  for (int i = 0; i <= num_of_tokens; ++i)
+    free(args[i]);
+  free(args);
   free(memory);
   printf("Exiting \n");
   return 0;
