@@ -227,7 +227,7 @@ void readfile(char *file) {
     }
     for (int i = 0; i <= num_of_tokens; ++i)
       args[i] = NULL;
-//    free(cmdLine);
+    free(cmdLine);
   }
   free(cmdLine);
   fclose(fptr);
@@ -274,8 +274,10 @@ int main() {
     }
     for (int i = 0; i <= num_of_tokens; ++i)
       args[i] = NULL;
+    free(cmdLine);
   }
   free(cmdLine);
+  free(memory);
   printf("Exiting \n");
   return 0;
 }
