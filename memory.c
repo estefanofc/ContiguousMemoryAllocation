@@ -278,6 +278,7 @@ int main() {
       args[i] = NULL;
   }
   free(cmdLine);
+  free(args);
   free(memory);
   printf("Exiting \n");
   return 0;
