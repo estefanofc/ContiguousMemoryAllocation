@@ -202,6 +202,8 @@ void readfile(char *file) {
       continue;
     if (cmdLine[0] == 'E') {
       printf("Exiting\n");
+      free(cmdLine);
+      free(memory);
       exit(0);
     }
     if (cmdLine[0] == 'S') {
@@ -274,7 +276,6 @@ int main() {
     }
     for (int i = 0; i <= num_of_tokens; ++i)
       args[i] = NULL;
-    free(cmdLine);
   }
   free(cmdLine);
   free(memory);
