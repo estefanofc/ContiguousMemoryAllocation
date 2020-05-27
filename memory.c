@@ -209,7 +209,7 @@ void readfile(char *file) {
       compact();
       continue;
     }
-    tokenize(cmdLine, args);
+    int num_of_tokens = tokenize(cmdLine, args);
     if (cmdLine[0] == 'E') {
       printf("Exiting\n");
       free(cmdLine);
@@ -230,6 +230,8 @@ void readfile(char *file) {
       readfile(args[1]);
       continue;
     }
+    for (int i = 0; i <= num_of_tokens; ++i)
+      args[i] = NULL;
   }
   free(cmdLine);
   fclose(fptr);
@@ -263,7 +265,7 @@ int main() {
       compact();
       continue;
     }
-    tokenize(cmdLine, args);
+    int num_of_tokens = tokenize(cmdLine, args);
     if (strcmp(args[0], "A") == 0) {
       allocate(args[1][0], atoi(args[2]), args[3][0]);
       continue;
@@ -277,6 +279,8 @@ int main() {
       readfile(args[1]);
       continue;
     }
+    for (int i = 0; i <= num_of_tokens; ++i)
+      args[i] = NULL;
   }
   free(cmdLine);
   free(memory);
