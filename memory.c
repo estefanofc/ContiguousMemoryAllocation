@@ -215,7 +215,6 @@ void readfile(char *file) {
       free(cmdLine);
       free(memory);
       fclose(fptr);
-      free(fptr);
       exit(0);
     }
     if (strcmp(args[0], "A") == 0) {
@@ -236,7 +235,6 @@ void readfile(char *file) {
   }
 
   free(cmdLine);
-  //free(*args);
   fclose(fptr);
   free(fptr);
 }
@@ -281,13 +279,8 @@ int main() {
       readfile(args[1]);
       continue;
     }
-//    for (int i = 0; i <= num_of_tokens; ++i)
-//      args[i] = NULL;
   }
   free(cmdLine);
-//  for (int i = 0; i <= num_of_tokens; ++i)
-//    free(args[i]);
-  //free(args);
   free(memory);
   printf("Exiting \n");
   return 0;
