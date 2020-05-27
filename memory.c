@@ -56,7 +56,7 @@ void firstFit(char process, int size) {
     if (memory[i] == '.') {
       start = i;
       int j = i;
-      while (memory[j] == '.') {
+      while (memory[j] == '.' && j < MEM_SIZE) {
         count++;
         j++;
       }
@@ -242,7 +242,7 @@ int main() {
   for (int i = 0; i < MEM_SIZE; ++i)
     memory[i] = '.';
   char *args[MAX_LINE / 2 + 1];/* command line arguments */
-  char *cmdLine = (char *) malloc(MAX_LINE * sizeof(char));
+  char *cmdLine = calloc(1, MAX_LINE);
   //int num_of_tokens;
   for (int i = 0; i < MAX_LINE / 2 + 1; ++i)
     args[i] = NULL;
