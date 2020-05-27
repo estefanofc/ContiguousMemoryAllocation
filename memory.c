@@ -235,9 +235,11 @@ void readfile(char *file) {
       args[i] = NULL;
     free(cmdLine);
   }
+
   free(cmdLine);
   //free(*args);
   fclose(fptr);
+  free(fptr);
 }
 
 int main() {
