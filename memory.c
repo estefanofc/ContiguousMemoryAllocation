@@ -185,7 +185,8 @@ int tokenize(char *line, char **tokens) {
 
 void readfile(char *file) {
   /* Open the file for reading */
-  FILE *fptr = fopen(file, "r");
+  FILE *fptr;
+  fptr = fopen(file, "r");
   if (fptr == NULL) {
     perror("Unable to open file");
     exit(1);
@@ -239,7 +240,7 @@ void readfile(char *file) {
 }
 
 int main() {
-  memory = (char *) malloc(MEM_SIZE * sizeof(char));
+  memory = calloc(1, MEM_SIZE);
   for (int i = 0; i < MEM_SIZE; ++i)
     memory[i] = '.';
   char *args[MAX_LINE / 2 + 1];/* command line arguments */
@@ -274,7 +275,6 @@ int main() {
       continue;
     }
     if (strcmp(args[0], "R") == 0) {
-      free(cmdLine);
       readfile(args[1]);
       continue;
     }
