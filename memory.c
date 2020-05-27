@@ -191,7 +191,7 @@ void readfile(char *file) {
     exit(1);
   }
   char *args[MAX_LINE / 2 + 1];/* command line arguments */
-  char *cmdLine = NULL;
+  char *cmdLine = calloc(1, MAX_LINE);
   size_t len;
   for (int i = 0; i < MAX_LINE / 2 + 1; ++i)
     args[i] = NULL;
@@ -209,7 +209,7 @@ void readfile(char *file) {
       compact();
       continue;
     }
-    int num_of_tokens = tokenize(cmdLine, args);
+    tokenize(cmdLine, args);
     if (cmdLine[0] == 'E') {
       printf("Exiting\n");
       free(cmdLine);
@@ -230,8 +230,6 @@ void readfile(char *file) {
       readfile(args[1]);
       continue;
     }
-    for (int i = 0; i <= num_of_tokens; ++i)
-      args[i] = NULL;
   }
   free(cmdLine);
   fclose(fptr);
