@@ -226,6 +226,7 @@ void readfile(char *file) {
       continue;
     }
     if (strcmp(args[0], "R") == 0) {
+      free(cmdLine);
       readfile(args[1]);
       continue;
     }
