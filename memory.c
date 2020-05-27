@@ -200,13 +200,7 @@ void readfile(char *file) {
       break;
     if (strcmp(cmdLine, "") == 0)
       continue;
-    if (cmdLine[0] == 'E') {
-      printf("Exiting\n");
-      free(cmdLine);
-      free(memory);
-      free(*args);
-      exit(0);
-    }
+
     if (cmdLine[0] == 'S') {
       showState();
       continue;
@@ -216,6 +210,15 @@ void readfile(char *file) {
       continue;
     }
     int num_of_tokens = tokenize(cmdLine, args);
+    if (cmdLine[0] == 'E') {
+      printf("Exiting\n");
+      free(cmdLine);
+      free(memory);
+//      for (int i = 0; i < num_of_tokens; ++i)
+//        free(args[i]);
+      //free(args);
+      exit(0);
+    }
     if (strcmp(args[0], "A") == 0) {
       allocate(args[1][0], atoi(args[2]), args[3][0]);
       continue;
@@ -233,7 +236,7 @@ void readfile(char *file) {
     free(cmdLine);
   }
   free(cmdLine);
-  free(*args);
+  //free(*args);
   fclose(fptr);
 }
 
@@ -243,7 +246,7 @@ int main() {
     memory[i] = '.';
   char *args[MAX_LINE / 2 + 1];/* command line arguments */
   char *cmdLine = (char *) malloc(MAX_LINE * sizeof(char));
-  int num_of_tokens
+  int num_of_tokens;
   for (int i = 0; i < MAX_LINE / 2 + 1; ++i)
     args[i] = NULL;
   while (1) {
@@ -281,9 +284,9 @@ int main() {
       args[i] = NULL;
   }
   free(cmdLine);
-  for (int i = 0; i <= num_of_tokens; ++i)
-    free(args[i]);
-  free(args);
+//  for (int i = 0; i <= num_of_tokens; ++i)
+//    free(args[i]);
+  //free(args);
   free(memory);
   printf("Exiting \n");
   return 0;
