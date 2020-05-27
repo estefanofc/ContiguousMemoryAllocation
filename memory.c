@@ -16,8 +16,35 @@
 
 char *memory;
 
-void bestFit() {
-
+void bestFit(char process, int size) {
+  if (size > MEM_SIZE)
+    return;
+  int count = 0;
+  int start = 0;
+  int min = 90;
+  int minStart = -1;
+  for (int i = 0; i < MEM_SIZE; ++i) {
+    if (memory[i] == '.') {
+      start = i;
+      int j = i;
+      while (memory[j] == '.') {
+        count++;
+        j++;
+      }
+      if (count < min) {
+        min = count;
+        minStart = start;
+      }
+      count = 0;
+      i = j - 1;
+    }
+  }
+  if (count < size)
+    return;
+  for (int i = minStart; i < start + size; ++i) {
+    if (memory[i] == '.')
+      memory[i] = process;
+  }
 }
 
 void firstFit(char process, int size) {
@@ -96,7 +123,18 @@ void readfile(char *line) {
 }
 
 void compact() {
-
+  char *memoryCopy = (char *) malloc(MEM_SIZE * sizeof(char));
+  for (int i = 0; i < MEM_SIZE; i++)
+    memoryCopy[i] = '.';
+  int count = 0;
+  for (int i = 0; i < MEM_SIZE; ++i) {
+    if (memory[i] != '.') {
+      memoryCopy[count] = memory[i];
+      count++;
+    }
+  }
+  for (int i = 0; i < MEM_SIZE; i++)
+    memory[i] = memoryCopy[i];
 }
 
 int readline(char **buffer) {
