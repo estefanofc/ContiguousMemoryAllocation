@@ -204,6 +204,7 @@ void readfile(char *file) {
       printf("Exiting\n");
       free(cmdLine);
       free(memory);
+      free(*args);
       exit(0);
     }
     if (cmdLine[0] == 'S') {
@@ -232,6 +233,7 @@ void readfile(char *file) {
     free(cmdLine);
   }
   free(cmdLine);
+  free(*args);
   fclose(fptr);
 }
 
@@ -278,7 +280,7 @@ int main() {
       args[i] = NULL;
   }
   free(cmdLine);
-  free(args);
+  free(*args);
   free(memory);
   printf("Exiting \n");
   return 0;
