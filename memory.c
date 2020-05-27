@@ -39,9 +39,9 @@ void bestFit(char process, int size) {
       i = j - 1;
     }
   }
-  if (count < size)
+  if (min < size)
     return;
-  for (int i = minStart; i < start + size; ++i) {
+  for (int i = minStart; i < minStart + size; ++i) {
     if (memory[i] == '.')
       memory[i] = process;
   }
@@ -74,8 +74,35 @@ void firstFit(char process, int size) {
   }
 }
 
-void worstFit() {
-
+void worstFit(char process, int size) {
+  if (size > MEM_SIZE)
+    return;
+  int count = 0;
+  int start = 0;
+  int max = -1;
+  int maxStart = -1;
+  for (int i = 0; i < MEM_SIZE; ++i) {
+    if (memory[i] == '.') {
+      start = i;
+      int j = i;
+      while (memory[j] == '.') {
+        count++;
+        j++;
+      }
+      if (count > max) {
+        max = count;
+        maxStart = start;
+      }
+      count = 0;
+      i = j - 1;
+    }
+  }
+  if (max < size)
+    return;
+  for (int i = maxStart; i < maxStart + size; ++i) {
+    if (memory[i] == '.')
+      memory[i] = process;
+  }
 }
 
 void allocate(char process, int size, char algo) {
@@ -86,10 +113,10 @@ void allocate(char process, int size, char algo) {
   case 'F':firstFit(process, size);
     printf("Allocated %d for process %c\n", size, process);
     break;
-  case 'B':bestFit();
+  case 'B':bestFit(process, size);
     printf("Allocated %d for process %c\n", size, process);
     break;
-  case 'W':worstFit();
+  case 'W':worstFit(process, size);
     printf("Allocated %d for process %c\n", size, process);
     break;
   default:printf("Invalid algorithm\n");
@@ -116,10 +143,6 @@ void showState() {
     printf("%c", memory[i]);
   }
   printf("\n");
-}
-
-void readfile(char *line) {
-  printf(line);
 }
 
 void compact() {
@@ -159,8 +182,53 @@ int tokenize(char *line, char **tokens) {
   return num;
 }
 
-void execute() {
-
+void readfile(char *file) {
+  /* Open the file for reading */
+  FILE *fptr = fopen(file, "r");
+  if (fptr == NULL) {
+    perror("Unable to open file");
+    exit(1);
+  }
+  char *args[MAX_LINE / 2 + 1];/* command line arguments */
+  char *cmdLine = NULL;
+  size_t len;
+  for (int i = 0; i < MAX_LINE / 2 + 1; ++i)
+    args[i] = NULL;
+  while (getline(&cmdLine, &len, fptr)) {
+    if (len <= 0)
+      break;
+    if (strcmp(cmdLine, "") == 0)
+      continue;
+    if (cmdLine[0] == 'E') {
+      printf("Exiting\n");
+      exit(0);
+    }
+    if (cmdLine[0] == 'S') {
+      showState();
+      continue;
+    }
+    if (cmdLine[0] == 'C') {
+      compact();
+      continue;
+    }
+    int num_of_tokens = tokenize(cmdLine, args);
+    if (strcmp(args[0], "A") == 0) {
+      allocate(args[1][0], atoi(args[2]), args[3][0]);
+      continue;
+    }
+    if (strcmp(args[0], "F") == 0) {
+      freeAllocations(args[1][0]);
+      continue;
+    }
+    if (strcmp(args[0], "R") == 0) {
+      readfile(args[1]);
+      continue;
+    }
+    for (int i = 0; i <= num_of_tokens; ++i)
+      args[i] = NULL;
+//    free(cmdLine);
+  }
+  fclose(fptr);
 }
 
 int main() {
