@@ -158,6 +158,7 @@ void compact() {
   }
   for (int i = 0; i < MEM_SIZE; i++)
     memory[i] = memoryCopy[i];
+  free(memoryCopy);
 }
 
 int readline(char **buffer) {
@@ -228,6 +229,7 @@ void readfile(char *file) {
       args[i] = NULL;
 //    free(cmdLine);
   }
+  free(cmdLine);
   fclose(fptr);
 }
 
@@ -273,6 +275,7 @@ int main() {
     for (int i = 0; i <= num_of_tokens; ++i)
       args[i] = NULL;
   }
+  free(cmdLine);
   printf("Exiting \n");
   return 0;
 }
