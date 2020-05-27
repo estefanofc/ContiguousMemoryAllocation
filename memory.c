@@ -12,12 +12,39 @@
 #include <unistd.h>     // execvp
 #include <sys/wait.h>   // wait
 #define MAX_LINE 80 /* The maximum length command*/
+#define MEM_SIZE 80 /* The maximum length command*/
+
+char *memory;
+
 void bestFit() {
 
 }
 
-void firstFit() {
-
+void firstFit(char process, int size) {
+  if (size > MEM_SIZE)
+    return;
+  int count = 0;
+  int start = 0;
+  for (int i = 0; i < MEM_SIZE; ++i) {
+    if (memory[i] == '.') {
+      start = i;
+      int j = i;
+      while (memory[j] == '.') {
+        count++;
+        j++;
+      }
+      if (count >= size)
+        break;
+      count = 0;
+      i = j - 1;
+    }
+  }
+  if (count < size)
+    return;
+  for (int i = start; i < start + size; ++i) {
+    if (memory[i] == '.')
+      memory[i] = process;
+  }
 }
 
 void worstFit() {
@@ -25,9 +52,22 @@ void worstFit() {
 }
 
 void allocate(char process, int size, char algo) {
-  printf("%c", process);
-  printf("%d", size);
-  printf("%c", algo);
+//  printf("%c", process);
+//  printf("%d", size);
+//  printf("%c", algo);
+  switch (algo) {
+  case 'F':firstFit(process, size);
+    printf("Allocated %d for process %c\n", size, process);
+    break;
+  case 'B':bestFit();
+    printf("Allocated %d for process %c\n", size, process);
+    break;
+  case 'W':worstFit();
+    printf("Allocated %d for process %c\n", size, process);
+    break;
+  default:printf("Invalid algorithm\n");
+    break;
+  }
 }
 
 void freeAllocations(char process) {
@@ -35,7 +75,11 @@ void freeAllocations(char process) {
 }
 
 void showState() {
-
+  printf("Showing state of the memory pool\n");
+  for (int i = 0; i < MEM_SIZE; ++i) {
+    printf("%c", memory[i]);
+  }
+  printf("\n");
 }
 
 void readfile(char *line) {
@@ -68,7 +112,14 @@ int tokenize(char *line, char **tokens) {
   return num;
 }
 
+void execute() {
+
+}
+
 int main() {
+  memory = (char *) malloc(MEM_SIZE * sizeof(char));
+  for (int i = 0; i < MEM_SIZE; ++i)
+    memory[i] = '.';
   char *args[MAX_LINE / 2 + 1];/* command line arguments */
   char *cmdLine = (char *) malloc(MAX_LINE * sizeof(char));
   for (int i = 0; i < MAX_LINE / 2 + 1; ++i)
@@ -83,7 +134,6 @@ int main() {
     if (strcmp(cmdLine, "E") == 0)
       break;
     if (strcmp(cmdLine, "S") == 0) {
-      printf("S");
       showState();
       continue;
     }
@@ -110,7 +160,6 @@ int main() {
   }
   printf("Exiting \n");
   return 0;
-
 }
 
 
