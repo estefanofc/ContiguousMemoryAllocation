@@ -71,7 +71,16 @@ void allocate(char process, int size, char algo) {
 }
 
 void freeAllocations(char process) {
-  printf("%c", process);
+  printf("Freeing process: %c\n", process);
+  bool found = false;
+  for (int i = 0; i < MEM_SIZE; ++i) {
+    if (memory[i] == process) {
+      memory[i] = '.';
+      found = true;
+    }
+  }
+  if (!found)
+    printf("Process %c not in memory\n", process);
 }
 
 void showState() {
